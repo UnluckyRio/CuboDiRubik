@@ -22,11 +22,12 @@ Un'implementazione web interattiva del classico Cubo di Rubik utilizzando JavaSc
 
 ## 🎯 Come Giocare
 
-1. **Avvia una Nuova Partita**: Clicca su "Scramble" per mescolare il cubo
+1. **Avvia una Nuova Partita**: Con un doppio click (o tap) sulla scacchiera centrale avvia una nuova partita
 2. **Ruota le Facce**: Clicca e trascina sulle facce del cubo per ruotarle
 3. **Cronometra**: Il timer si avvia automaticamente alla prima mossa
 4. **Risolvi**: Cerca di riportare tutte le facce al loro colore originale
-5. **Visualizza Statistiche**: Controlla i tuoi tempi e miglioramenti
+5. **Visualizza Statistiche**: Controlla i tuoi tempi e miglioramenti con il pulsante "Statistiche"
+6. **Personalizza**: Scegli il tema, la dimensione del cubo e la configurazione di scramble preferita con il pulsante "Opzioni"
 
 ## 🛠️ Struttura del Progetto
 
@@ -61,16 +62,20 @@ CuboDiRubik/
 ## 🎨 Personalizzazione
 
 ### Temi
+
 Il gioco include diversi temi di colore preimpostati. Puoi personalizzare i colori modificando la sezione `Themes` nel file `script.js`.
 
 ### Dimensioni del Cubo
+
 Supporta cubi di diverse dimensioni:
+
 - 2x2x2 (Pocket Cube)
 - 3x3x3 (Cubo di Rubik classico)
 - 4x4x4 (Revenge Cube)
 - 5x5x5 (Professor Cube)
 
 ### Configurazioni di Scramble
+
 - Facile: 10 mosse
 - Medio: 25 mosse
 - Difficile: 50 mosse
@@ -94,6 +99,7 @@ Supporta cubi di diverse dimensioni:
 ## 🤝 Contribuire
 
 I contributi sono benvenuti! Sentiti libero di:
+
 - Segnalare bug
 - Suggerire nuove funzionalità
 - Migliorare il codice esistente
