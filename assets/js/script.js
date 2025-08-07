@@ -1,3 +1,9 @@
+const CONSTANTS = {
+  MAX_SCORES: 100,
+  DOUBLE_TAP_DELAY: 300,
+  ANIMATION_FRAME_RATE: 60,
+};
+
 const animationEngine = (() => {
   let uniqueID = 0;
 
@@ -8,6 +14,7 @@ const animationEngine = (() => {
       this.update = this.update.bind(this);
       this.raf = 0;
       this.time = 0;
+      this.timeouts = new Set();
     }
 
     update() {
@@ -44,6 +51,24 @@ const animationEngine = (() => {
       this.ids.splice(index, 1);
       delete this.animations[animation.id];
       animation = null;
+    }
+
+    addTimeout(callback, delay) {
+      const timeoutId = setTimeout(() => {
+        this.timeouts.delete(timeoutId);
+        try {
+          callback();
+        } catch (error) {
+          console.warn("Errore nel timeout:", error);
+        }
+      }, delay);
+      this.timeouts.add(timeoutId);
+      return timeoutId;
+    }
+
+    clearAllTimeouts() {
+      this.timeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+      this.timeouts.clear();
     }
   }
 
@@ -126,7 +151,15 @@ class World extends Animation {
 
     document.documentElement.style.fontSize = docFontSize + "px";
 
-    if (this.onResize) this.onResize.forEach((cb) => cb());
+    if (this.onResize) {
+      this.onResize.forEach((cb) => {
+        try {
+          cb();
+        } catch (error) {
+          console.warn("Errore nel callback di resize:", error);
+        }
+      });
+    }
   }
 
   createLights() {
@@ -1064,6 +1097,9 @@ const ANIMATING = 3;
 
 class Controls {
   constructor(game) {
+    if (!game) {
+      throw new Error("Il parametro game è richiesto per Controls");
+    }
     this.game = game;
 
     this.flipConfig = 0;
@@ -2615,7 +2651,8 @@ class Scores {
     data.scores.push(time);
     data.solves++;
 
-    if (data.scores.lenght > 100) data.scores.shift();
+    // Miglioramento: uso di costante invece di magic number
+    if (data.scores.length > CONSTANTS.MAX_SCORES) data.scores.shift();
 
     let bestTime = false;
 
@@ -3378,7 +3415,8 @@ class Game {
         if (this.state === STATE.Menu) {
           if (!tappedTwice) {
             tappedTwice = true;
-            setTimeout(() => (tappedTwice = false), 300);
+
+            setTimeout(() => (tappedTwice = false), CONSTANTS.DOUBLE_TAP_DELAY);
             return false;
           }
 
